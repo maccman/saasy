@@ -2,8 +2,10 @@
   :app_name: Saasy
   :app_domain: localhost:3001
   :app_site: http://localhost:3001
-  :other_site: http://localhost:3000
   :admin_email: info@example.com
+  
+  # This needs to point to your real site
+  :other_site: http://localhost:3001
   
   :sso_secret: change_me
   :sso_salt: change_me

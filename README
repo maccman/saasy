@@ -41,12 +41,14 @@ I'd like to thank "Made by Many":http://madebymany.co.uk for supporting this pro
 
 == Getting Started
 
+# cp config/database.example.yml config/database.yml
 # cp config/application.example.yml config/application.yml
 # cp config/subscription.example.yml config/subscription.yml
 # rake db:schema:load
 # Setup a cron job to run `rake sub:daily` daily
 # configure application.yml
 # configure subscriptions.yml
+# script/server -p 3001
 
 == Gateways
   

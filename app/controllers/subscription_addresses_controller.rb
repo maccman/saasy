@@ -7,10 +7,10 @@ class SubscriptionAddressesController < ApplicationController
   
   def update
     if @subscription_address.update_attributes(params[:subscription_address])
-      flash[:notice] = "Successfully updated address"
+      flash[:notice] = "Successfully updated invoice information"
       redirect_to :controller => "billing"
     else
-      flash.now[:error] = "Error updating address"
+      flash.now[:error] = "Error updating invoice information"
       render :action => "edit"
     end
   end

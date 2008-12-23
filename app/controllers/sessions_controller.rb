@@ -70,7 +70,9 @@ class SessionsController < ApplicationController
       handle_remember_cookie! new_cookie_flag
       if is_sso
         redirect_to sso_url
-      elsif AppConfig.other_site
+      elsif AppConfig.other_site != AppConfig.app_site
+        # We don't want to end up in a redirect loop
+        # if application.yml isn't configured correctly
         redirect_back_or_default(AppConfig.other_site + '/login')
       else
         redirect_back_or_default('/')
