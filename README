@@ -1,18 +1,23 @@
 == Welcome to Saasy
 
 Saasy is a Rails app that bills and authenticates, so you don't have to.
-The idea is that you host Saasy on a subdomain, and communicate with it using SSO/REST protocols. That means you're free to do more interesting coding.
+The idea is that you host Saasy on a subdomain, and communicate with it using SSO/REST protocols. 
+That means you're free to do more interesting coding.
 
-*This is alpha code - use at your own risk*
+*At the moment this is alpha code - use at your own risk*
 
-I'd like to thank "Made by Many":http://madebymany.co.uk for supporting this project.
+I'd like to thank Made by Many (http://madebymany.co.uk) for supporting this project.
 
-"Alex MacCaw":http://eribium.org (info@eribium.org).
+Alex MacCaw 
+
+http://eribium.org 
+info@eribium.org
 
 == Screenshots
-* "Billing":doc/Saasy_Billing.png
-* "Sign up":doc/Saasy_Signup.png
-* "Edit profile":doc/Saasy_Edit_Profile.png
+* Billing         - http://github.com/maccman/saasy/tree/master/doc/Saasy_Billing.png
+* Sign up         - http://github.com/maccman/saasy/tree/master/doc/Saasy_Signup.png
+* Edit profile    - http://github.com/maccman/saasy/tree/master/doc/Sassy_Edit_Profile.pdf
+* Example Invoice - http://github.com/maccman/saasy/tree/master/doc/invoice.pdf
 
 == Overview
 
