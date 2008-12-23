@@ -1,0 +1,6 @@
+<% if logged_in? %>
+  <%= link_to 'Profile', users_path %> | 
+    <%= link_to 'Billing', :controller => 'billing' %> | 
+      <%= link_to 'Main site', AppConfig.other_site %> |
+        <%= link_to 'Logout', logout_path %>
+<% end %>

@@ -1,0 +1,8 @@
+<%= render :partial => "/shared/email_header", :locals => {:user => @user} %>
+
+Welcome to <%= AppConfig.app_name %>.
+Your account has been created but we just need you to visit the link below to confirm you email.
+
+  <%= @url %>
+  
+<%= render :partial => "/shared/email_footer" %>

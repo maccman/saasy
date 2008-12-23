@@ -1,0 +1,18 @@
+<%# 
+  This email is for adding new users into an
+  existing account - not for normal signups.
+  Believe, me, I don't like sending out passwords,
+  but I can't see any way round it in this case.
+%>
+<%= render :partial => "/shared/email_header", :locals => {:user => @user} %>
+
+Your account has been created.
+  
+  Email:    <%=h @user.email %>
+  Password: <%=h @user.password %>
+
+Visit this url to activate your account:
+
+  <%= @url %>
+
+<%= render :partial => "/shared/email_footer" %>

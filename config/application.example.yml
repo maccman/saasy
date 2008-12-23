@@ -1,0 +1,24 @@
+:defaults: &defaults
+  :app_name: Saasy
+  :app_domain: localhost:3001
+  :app_site: http://localhost:3001
+  :other_site: http://localhost:3000
+  :admin_email: info@example.com
+  
+  :sso_secret: change_me
+  :sso_salt: change_me
+    
+:development:
+  <<: *defaults
+
+:test:
+  <<: *defaults
+
+:production:
+  <<: *defaults
+  :app_domain: account.example.com
+  :app_site: http://account.example.com
+  :other_site: http://example.com
+  
+  :sso_secret: change_me
+  :sso_salt: change_me

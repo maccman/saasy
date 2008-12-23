@@ -1,0 +1,35 @@
+<%- 
+  # This is different from #new since it's for adding users 
+  # To your account rather them signing up
+-%>
+
+<% title 'Add users to your account' %>
+
+<p><%= link_to "&laquo; Back", :action => :index %>
+
+<%= error_messages_for :user %>
+
+<% form_for(:user, :url => url_for(:action => :add_user)) do |f| %>
+  <p class="input-field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </p>
+  <p class="input-field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </p>
+  <p class="input-field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </p>
+  <p class="input-field">
+    <%= f.label :password %>
+    <%= f.text_field :password, :class => :fake, :readonly => true %>
+  </p>
+  <p class="input-indent">
+    (This information will get emailed to them)
+  </p>
+  <p class="input-button">
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>

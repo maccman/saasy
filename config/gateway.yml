@@ -1,0 +1,11 @@
+paypal_certificate:
+  login: LOGIN
+  password: PASSWORD
+  subject:
+  pem: |--
+    PASTE YOUR PEM FILE HERE
+
+paypal_signature:
+  login: LOGIN
+  password: PASSWORD
+  signature: SIGNATURE

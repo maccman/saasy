@@ -1,0 +1,164 @@
+Alex MacCaw
+Email: info@eribium.org
+Blog:  http://www.eribium.org
+
+RestResponses
+=============
+
+RestResponses is a couple of useful little methods to clear
+up your restfull controllers, turning something like this:
+
+	def	update
+	 @user = User.find(params[:id])
+	 @user.update_attributes!(params[:user])
+	 respond_to do |wants|
+	   wants.html { }
+	   wants.xml  { render :xml => @user.to_xml(:except => :hashed_password) }
+	 end
+	 rescue ActiveRecord::RecordNotFound
+	  render :nothing => true, :status => 404
+	 rescue ActiveRecord::InvalidRecord
+	  respond_to do |wants|
+	   wants.html { }
+	   wants.xml  { render :xml => @user.errors.to_xml }
+	  end
+	end
+	
+To this:
+
+	before_filter :find_user
+	def	update
+	 @user.update_attributes!(params[:user])
+	 responds @user
+	end
+	
+Installation
+============
+ruby script/plugin install http://rest-responses.googlecode.com/svn/trunk/rest_responses
+	
+Usage
+=====
+
+This plugin is basically a bunch of useful methods that
+return valid REST responses, while staying DRY.
+
+The main method is 'responds' which returns xml/json/yaml
+to clients, depending on what they requested.
+If you needs to do anything at all fancy, like RJS etc,
+you'll probably need to code it out in full (with respond_to),
+otherwise, this'll tidy things up.
+
+Another one that may need explaining is 'needs'.
+This basically ensures you have the correct parameters
+to requests, stopping you having to do extra error checking.
+
+The usage for 'needs' and 'responds' is gone into with a bit more
+detail in rest_responses.rb
+
+ActiveRecord::RecordNotFound and ActiveRecord::RecordInvalid exceptions
+are automatically caught (so you don't have to catch them for every method).
+Just remember to configure 'check_instance_variables'. See rest_responses.rb
+
+
+Example of your average REST controller (don't forget the routes)
+=================================================================
+
+class UsersController < ApplicationController
+    before_filter :find_user, :except => [:index, :new, :create]
+
+	# GET /users
+	def index
+	  @users =  User.find(:all)
+	  responds @users
+	end
+
+	# GET /users/1
+	def show
+	  responds @user
+	end
+
+	# GET /users/new
+	def new
+	  @user = User.new
+	  responds @user
+	end
+
+	# GET /users/1/edit
+	# def edit
+	#   @user = User.find(params[:id])
+	# end
+
+	# POST /users
+	def create
+	  @user = User.new(params[:user])
+	  @user.save!
+	  responds_creation @user
+	end
+
+	# PUT /users/1
+	def update
+	  @user.update_attributes!(params[:user])
+	  responds_updation @user
+	end
+
+	# DELETE /users/1
+	def destroy
+	  @user.destroy
+	  responds_deletion
+	end
+	
+	# POST /users/1/email
+	# def email
+	#   needs :from, :msg
+	#   @user.email(params[:from], params[:to])
+	#   responds_nothing
+	# end
+
+	private
+
+	def	find_user
+	 @user = User.find(params[:id])
+	end
+end
+
+class ApplicationController < ActionController::Base
+	def check_instance_variables
+   		[:user]
+ 	end
+end
+
+
+Tips
+====
+
+1)
+Override the to_xml method in your model to miss out or include bits
+and pieces by default. For example:
+class User < ActiveRecord::Base
+ def to_xml(options = {})
+  options[:except] ||= []
+  options[:except] << :hashed_password
+  options[:except].uniq!
+  super(options)
+ end
+end
+
+2)
+Put the following line in environment to enable sending parameters via yaml:
+ActionController::Base.param_parsers[Mime::YAML] = :yaml
+
+3)
+On a less REST orientated note I use this method to easily log to the console
+(can't remember where I first saw this). It lets you do something like this:
+	>> log_to(STDOUT)
+	>> User.find(:all)
+	SQL (0.000260)   SET SQL_AUTO_IS_NULL=0
+	User Load (0.002139)   SELECT * FROM Users
+
+def log_to(stream)
+  ActiveRecord::Base.logger = Logger.new(stream)
+  ActiveRecord::Base.clear_active_connections!
+end
+
+
+Copyright (c) 2007 Alex MacCaw, released under the MIT license

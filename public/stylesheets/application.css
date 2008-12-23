@@ -1,0 +1,429 @@
+/* Social mod */
+body {
+  background-color: #E5E5E5;
+  font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
+  font-size: 12px;
+  color: #707070;
+}
+
+a img {
+  border: none;
+}
+
+a {
+  color: #374F5B;
+}
+
+h1, h2, h3 {
+  color: #3E383F;
+}
+
+h2 {
+  margin-bottom: 7px;
+}
+
+h3 {
+  border-bottom: 1px solid #CBCBCB;
+  margin-bottom: 5px;
+  padding-bottom: 2px;
+  margin-top: 15px;
+}
+
+p {
+  margin: 0.3em 0 0.7em;
+}
+
+#container table {
+  border-bottom: 1px dotted #333333;
+}
+
+#container table tr th {
+  font-weight: bold;
+  background-color: #333333;
+  color: #fff;
+}
+
+#container table tr td, table tr th {
+  padding: 5px;
+}
+
+#container table tr {
+  border-left: 1px dotted #333333;
+  border-right: 1px dotted #333333;
+}
+
+#container table tr.header {
+  border: 1px solid #333333;
+}
+
+#container table tr.odd {
+  background-color: #F5F5F5;
+}
+
+#container table tr.info {
+  background-color: #E5E5E5;
+  color: #3E383F;
+}
+
+#container table.keyValue, #container table.keyValue tr {
+  border: none;
+}
+
+#container table.keyValue td.key {
+  font-weight: bold;
+  width: 70px;
+  vertical-align: top;
+}
+
+ul {
+  list-style-position: inside;
+  list-style-type: disc;
+}
+
+/* http://ajaxian.com/archives/wrapping-the-pre-tag */
+pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+label {
+  display: block;
+  float: left;
+  margin-right: 10px;
+  font-weight: bold;
+  text-align: right;
+  color: #333333;
+  font-size: 11px;
+  font-family: verdana,sans-serif;
+  width: 130px;
+}
+
+textarea {
+  display: block;
+  font-size: 12px;
+  color: #333333;
+  font-family: verdana,sans-serif;
+  line-height: 1.3;
+  margin: 3px 0;
+  padding: 3px;
+}
+
+input.fake, textarea.fake {
+  background:none; 
+  display:inline; 
+  border:none; 
+}
+
+input, select {
+  display: block;
+  font-size: 12px;
+  color: #333333;
+  font-family: verdana,sans-serif;
+  line-height: 1.3;
+  margin: 3px 0;
+}
+
+.input-field input {
+  text-indent: 5px;
+}
+
+.input-field.checkbox input {
+  margin-left: 140px;
+}
+
+.input-field, .input-button {
+  clear:left;
+  position: relative;
+}
+
+.input-button input {
+  margin: 9px 0 0 140px;
+}
+
+.input-field.further-indent label {
+  width: 150px;
+  font-weight: normal;
+}
+
+.input-field.further-indent.checkbox input {
+  margin-left: 160px;
+}
+
+.input-indent {
+  padding: 3px 0 3px 0;
+  margin: 0 0 0 140px;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.clear {
+  clear:both;
+}
+
+.inline, 
+.inline input, 
+.inline select
+{
+  display: inline;
+}
+
+#header {
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 5px;
+  color: #242424;
+  background-color: #242424;
+}
+
+#header h1 {
+  color: #fff;
+  padding-top: 5px;
+}
+
+#header h1 a, #header h1 a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+#upper_menu {
+  color: #fff;
+  float: right;
+}
+
+#upper_menu a {
+  margin-left: 5px;
+  color: #fff;
+  text-decoration: none;
+}
+
+#header a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+#menu {
+  margin-top: 10px;
+  list-style: none;
+  height: 27px;
+}
+
+#menu li {
+  text-align: left;
+}
+
+#menu li a {
+  padding: 6px 8px 6px 8px;
+  display: block;
+  margin-right: 3px;
+  float:left;
+  text-decoration: none;
+  background-color: #333333;
+  color: #DEDFD9;
+}
+
+#menu li a:hover {
+  text-decoration:none;
+  background-color: #E5E5E5;
+  color: #2E2B26;
+}
+
+#menu li a.active {
+  background-color: #E5E5E5;
+  color: #2E2B26;
+}
+
+#menu li a.right {
+  float: right;
+}
+
+#container {
+  background-color: #ffffff;
+  margin-left: 30px;
+  margin-right: 15px;
+  padding: 10px;
+  width: 75%;
+  position: relative;
+  float: left;
+  min-width: 450px;
+  border-style: solid;
+  border-color: #CCCCCC;
+  border-width: 0px 3px 3px 0px;
+}
+
+#container h1 {
+  background-color: #333333;
+  color: #ffffff;
+  font-size: 18px;
+  padding: 10px 20px 10px 20px;
+  margin: -10px -10px 15px -10px;
+}
+
+#container h2 {
+  background-color: #333333;
+  color: #ffffff;
+  font-size: 18px;
+  padding: 10px 20px 10px 20px;
+  margin: 15px -10px 15px -10px;
+}
+
+#container .left, #container .right {
+  width: 49%;
+}
+
+#container .left {
+  float: left;
+}
+
+#container .right {
+  float: right;
+}
+
+#right {
+  float: left;
+  margin-top: 25px;
+  width: 15%;
+}
+
+#right p {
+  line-height: 1.4em;
+}
+
+#footer {
+  color: #ADADAD;
+  padding: 5px;
+  margin-left: 30px;
+  width: 75%;
+  min-width: 450px;
+  text-align: center;
+}
+
+#footer a {
+  color: #ADADAD;
+  text-decoration: none;
+}
+
+#footer a:hover {
+  text-decoration: underline;
+}
+
+/*input#openid_url {
+   background: url(http://openid.net/login-bg.gif) no-repeat;
+   background-color: #fff;
+   background-position: 0 50%;
+   color: #000;
+   padding-left: 18px;
+}*/
+
+#container .tasks a {
+  background-color: #F5F5F5;
+  border: 1px dotted #CBCBCB;
+  color: #333333;
+  display: block;
+  padding: 5px 5px 5px 10px;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
+#container .tasks a:hover {
+  background: #E5E5E5;
+}
+
+.block {
+  background-color: #F5F5F5;
+  border: 1px dotted #CBCBCB;
+  color: #333333;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 0;
+}
+
+p.block {
+  padding-left: 10px;
+}
+
+.block.highlight {
+  background-color: #FFFFCC;
+}
+
+/* Rails Specifics */
+
+.flash {
+  color: #000000;
+  padding: 5px 20px 5px 20px;
+  margin: -15px -10px 15px -10px;
+  text-align: center;
+}
+
+.flash.notice {
+  background-color: #CFC;
+/*  border: solid 1px #6C6;*/
+}
+
+.flash.highlight {
+  background-color: #FFFFCC;
+}
+
+.flash.error {
+/*  border: solid 1px #C66;*/
+  background-color: #FCC;
+}
+
+.clear {
+  clear: both;
+}
+
+.fieldWithErrors {
+  display:inline;
+}
+
+.fieldWithErrors label {
+  color: red;
+}
+
+#errorExplanation {
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #F5F5F5;
+  border: 1px dotted #CBCBCB;
+  color: #333333;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: 0px;
+  background-color: #FFCCCC;
+  color: #000000;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 8px;
+}
+
+#errorExplanation ul {
+  margin: 2px 24px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: disc;
+}
+
+.pagination {
+  padding: 5px;
+  float: left;
+}

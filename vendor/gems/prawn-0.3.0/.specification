@@ -1,0 +1,246 @@
+--- !ruby/object:Gem::Specification 
+name: prawn
+version: !ruby/object:Gem::Version 
+  version: 0.3.0
+platform: ruby
+authors: 
+- Gregory Brown
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2008-12-16 00:00:00 +00:00
+default_executable: 
+dependencies: []
+
+description: Prawn is a fast, tiny, and nimble PDF generator for Ruby
+email: "  gregory.t.brown@gmail.com"
+executables: []
+
+extensions: []
+
+extra_rdoc_files: 
+- README
+- LICENSE
+- COPYING
+files: 
+- examples/bounding_box
+- examples/bounding_box/bounding_boxes.rb
+- examples/bounding_box/lazy_bounding_boxes.rb
+- examples/bounding_box/padded_box.rb
+- examples/bounding_box/russian_boxes.rb
+- examples/general
+- examples/general/background.rb
+- examples/general/canvas.rb
+- examples/general/measurement_units.rb
+- examples/general/multi_page_layout.rb
+- examples/general/page_geometry.rb
+- examples/graphics
+- examples/graphics/basic_images.rb
+- examples/graphics/cmyk.rb
+- examples/graphics/curves.rb
+- examples/graphics/hexagon.rb
+- examples/graphics/image_fit.rb
+- examples/graphics/image_flow.rb
+- examples/graphics/image_position.rb
+- examples/graphics/line.rb
+- examples/graphics/png_types.rb
+- examples/graphics/polygons.rb
+- examples/graphics/remote_images.rb
+- examples/graphics/ruport_style_helpers.rb
+- examples/graphics/stroke_bounds.rb
+- examples/m17n
+- examples/m17n/chinese_text_wrapping.rb
+- examples/m17n/euro.rb
+- examples/m17n/sjis.rb
+- examples/m17n/utf8.rb
+- examples/m17n/win_ansi_charset.rb
+- examples/table
+- examples/table/addressbook.csv
+- examples/table/cell.rb
+- examples/table/currency.csv
+- examples/table/fancy_table.rb
+- examples/table/ruport_formatter.rb
+- examples/table/table.rb
+- examples/table/table_alignment.rb
+- examples/table/table_border_color.rb
+- examples/table/table_colspan.rb
+- examples/table/table_header_color.rb
+- examples/table/table_header_underline.rb
+- examples/text
+- examples/text/alignment.rb
+- examples/text/family_based_styling.rb
+- examples/text/flowing_text_with_header_and_footer.rb
+- examples/text/font_calculations.rb
+- examples/text/font_size.rb
+- examples/text/kerning.rb
+- examples/text/simple_text.rb
+- examples/text/simple_text_ttf.rb
+- examples/text/span.rb
+- examples/text/text_box.rb
+- examples/text/text_flow.rb
+- lib/prawn
+- lib/prawn/compatibility.rb
+- lib/prawn/document
+- lib/prawn/document/annotations.rb
+- lib/prawn/document/bounding_box.rb
+- lib/prawn/document/destinations.rb
+- lib/prawn/document/internals.rb
+- lib/prawn/document/page_geometry.rb
+- lib/prawn/document/span.rb
+- lib/prawn/document/table.rb
+- lib/prawn/document/text
+- lib/prawn/document/text/box.rb
+- lib/prawn/document/text.rb
+- lib/prawn/document.rb
+- lib/prawn/encoding.rb
+- lib/prawn/errors.rb
+- lib/prawn/font
+- lib/prawn/font/cmap.rb
+- lib/prawn/font/metrics.rb
+- lib/prawn/font/wrapping.rb
+- lib/prawn/font.rb
+- lib/prawn/graphics
+- lib/prawn/graphics/cell.rb
+- lib/prawn/graphics/color.rb
+- lib/prawn/graphics.rb
+- lib/prawn/images
+- lib/prawn/images/jpg.rb
+- lib/prawn/images/png.rb
+- lib/prawn/images.rb
+- lib/prawn/literal_string.rb
+- lib/prawn/measurement_extensions.rb
+- lib/prawn/measurements.rb
+- lib/prawn/name_tree.rb
+- lib/prawn/pdf_object.rb
+- lib/prawn/reference.rb
+- lib/prawn.rb
+- spec/annotations_spec.rb
+- spec/bounding_box_spec.rb
+- spec/destinations_spec.rb
+- spec/document_spec.rb
+- spec/font_spec.rb
+- spec/graphics_spec.rb
+- spec/images_spec.rb
+- spec/jpg_spec.rb
+- spec/measurement_units_spec.rb
+- spec/metrics_spec.rb
+- spec/name_tree_spec.rb
+- spec/pdf_object_spec.rb
+- spec/png_spec.rb
+- spec/reference_spec.rb
+- spec/spec_helper.rb
+- spec/table_spec.rb
+- spec/text_spec.rb
+- vendor/pdf-inspector
+- vendor/pdf-inspector/lib
+- vendor/pdf-inspector/lib/pdf
+- vendor/pdf-inspector/lib/pdf/inspector
+- vendor/pdf-inspector/lib/pdf/inspector/graphics.rb
+- vendor/pdf-inspector/lib/pdf/inspector/page.rb
+- vendor/pdf-inspector/lib/pdf/inspector/text.rb
+- vendor/pdf-inspector/lib/pdf/inspector/xobject.rb
+- vendor/pdf-inspector/lib/pdf/inspector.rb
+- vendor/pdf-inspector/README
+- vendor/ttfunk
+- vendor/ttfunk/data
+- vendor/ttfunk/data/fonts
+- vendor/ttfunk/data/fonts/comicsans.ttf
+- vendor/ttfunk/data/fonts/DejaVuSans.ttf
+- vendor/ttfunk/example.rb
+- vendor/ttfunk/lib
+- vendor/ttfunk/lib/ttfunk
+- vendor/ttfunk/lib/ttfunk/table
+- vendor/ttfunk/lib/ttfunk/table/cmap.rb
+- vendor/ttfunk/lib/ttfunk/table/directory.rb
+- vendor/ttfunk/lib/ttfunk/table/head.rb
+- vendor/ttfunk/lib/ttfunk/table/hhea.rb
+- vendor/ttfunk/lib/ttfunk/table/hmtx.rb
+- vendor/ttfunk/lib/ttfunk/table/kern.rb
+- vendor/ttfunk/lib/ttfunk/table/maxp.rb
+- vendor/ttfunk/lib/ttfunk/table/name.rb
+- vendor/ttfunk/lib/ttfunk/table.rb
+- vendor/ttfunk/lib/ttfunk.rb
+- data/encodings
+- data/encodings/win_ansi.txt
+- data/fonts
+- data/fonts/Activa.ttf
+- data/fonts/Chalkboard.ttf
+- data/fonts/comicsans.ttf
+- data/fonts/Courier-Bold.afm
+- data/fonts/Courier-BoldOblique.afm
+- data/fonts/Courier-Oblique.afm
+- data/fonts/Courier.afm
+- data/fonts/DejaVuSans.ttf
+- data/fonts/Dustismo_Roman.ttf
+- data/fonts/gkai00mp.ttf
+- data/fonts/Helvetica-Bold.afm
+- data/fonts/Helvetica-BoldOblique.afm
+- data/fonts/Helvetica-Oblique.afm
+- data/fonts/Helvetica.afm
+- data/fonts/MustRead.html
+- data/fonts/Symbol.afm
+- data/fonts/Times-Bold.afm
+- data/fonts/Times-BoldItalic.afm
+- data/fonts/Times-Italic.afm
+- data/fonts/Times-Roman.afm
+- data/fonts/ZapfDingbats.afm
+- data/images
+- data/images/arrow.png
+- data/images/arrow2.png
+- data/images/barcode_issue.png
+- data/images/dice.alpha
+- data/images/dice.dat
+- data/images/dice.png
+- data/images/fractal.jpg
+- data/images/letterhead.jpg
+- data/images/page_white_text.alpha
+- data/images/page_white_text.dat
+- data/images/page_white_text.png
+- data/images/pigs.jpg
+- data/images/rails.dat
+- data/images/rails.png
+- data/images/ruport.png
+- data/images/ruport_data.dat
+- data/images/ruport_transparent.png
+- data/images/ruport_type0.png
+- data/images/stef.jpg
+- data/images/web-links.dat
+- data/images/web-links.png
+- data/shift_jis_text.txt
+- Rakefile
+- README
+- LICENSE
+- COPYING
+has_rdoc: true
+homepage: http://prawn.majesticseacreature.com
+post_install_message: 
+rdoc_options: 
+- --title
+- Prawn Documentation
+- --main
+- README
+- -q
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: prawn
+rubygems_version: 1.3.1
+signing_key: 
+specification_version: 2
+summary: A fast and nimble PDF generator for Ruby
+test_files: []
+

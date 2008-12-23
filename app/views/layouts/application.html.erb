@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <%- if yield(:title) -%>
+      <title><%= AppConfig.app_name %> › <%=h yield(:title) %></title>
+    <%- else -%>
+      <title><%= AppConfig.app_name %></title>
+    <%- end -%>
+    <%= stylesheet_link_tag 'reset', 'application' %>
+    <%= javascript_include_tag :defaults %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+    <div id="header">
+      <div id="upper_menu">
+        <% if logged_in? %>
+          <%= link_to h(current_user.name), users_path %>
+          <%= link_to "Log out", logout_path, { :title => "Log out" }    %>
+        <% else %>
+          <%= link_to "Log in",  login_path,  { :title => "Log in" } %>
+          <%= link_to "Sign up", signup_path, { :title => "Create an account" } %>
+        <% end %>
+      </div>
+      <h1><%= link_to AppConfig.app_name, '/' %></h1>
+      <% if logged_in? %>
+        <ul id="menu">
+          <li><%= menu_link_to '&laquo; Back to site', AppConfig.other_site %></li>
+          <%- if account_owner? -%>
+            <li class="right"><%= menu_link_to 'Billing', :controller => 'billing' %>
+          <%- end -%>
+          <li class="right"><%= menu_link_to 'Profile', current_user %></li>
+          <%- if account_owner? -%>
+            <li class="right"><%= menu_link_to 'Users', users_path %>
+          <%- end -%>
+        </ul>
+      <% end %>
+    </div>
+    <div id="container">
+      <%- if show_title? -%>
+        <h1><%=h yield(:title) %></h1>
+      <%- end -%>
+      
+      <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :class => "flash #{name}" %>
+      <%- end -%>
+      
+      <%= yield %>
+    </div>
+    <div id="right">
+      <%= yield(:right) %>
+    </div>
+        
+    <div id="footer" class="clear">
+       <%= render :partial => "/shared/footer" %>
+    </div>
+  </body>
+</html>

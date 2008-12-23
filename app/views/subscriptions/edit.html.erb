@@ -1,0 +1,16 @@
+<% title "Edit Credit Card Information" %>
+
+<% 
+  # We need to set @card
+  # for 'error_messages_for'
+  @card = @subscription.card
+  @card.number = nil
+%>
+<%= error_messages_for :card %>
+<%= error_messages_for :subscription %>
+
+<%= form_tag({:action => :update}, :method => :put, :class => 'enhanced') %>
+  <%= render :partial => "subscription", :locals => {:subscription => @subscription} %>
+  
+  <p class="input-button"><%= submit_tag 'Update' %></p>
+</form>

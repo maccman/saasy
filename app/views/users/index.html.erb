@@ -1,0 +1,28 @@
+<% title 'Users' %>
+
+<table border="0" width="100%">
+  <tr>
+    <th>Name</th>
+    <th>Account owner?</th>
+    <th width="200px">Actions</th>
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= current_account.owner == user %></td>
+      <td>
+        <%= link_to 'Show', user %>
+        <%- if user != current_user -%>
+          | 
+          <%- if user.suspended? -%>
+            <%= link_to 'Unsuspend', {:action => :unsuspend, :id => user.id}, :method => :post %>
+          <%- else -%>
+            <%= link_to 'Suspend', user, :method => :delete, :confirm => 'Are you sure?' %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<p align="right"><%= link_to "Create new &raquo;", :action => "add_user" %></p>

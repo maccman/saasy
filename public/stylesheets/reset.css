@@ -1,0 +1,15 @@
+/* Reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,b
+{margin:0;padding:0;}
+table
+{border-collapse:collapse;border-spacing:0;}
+address,caption,cite,code,dfn,em,th,var
+{font-style:normal;font-weight:normal;}
+img{border:0;}
+ol,ul{list-style:none;}
+caption,th{text-align:left;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;}.clear{clear:both;}.clearL{clear:left;}.clearR{clear:right;}.hide{display:none;}.show{display:block;}.inline{display:inline;}.left{float:left;}.right{float:right;}.pointer{cursor:pointer;}.margin0{margin:0;}.padding0{padding:0;}.hideiframe{position:absolute;left:-2000px;}.clearer
+{float:none!important;clear:both;height:1px;border:0px;overflow:hidden;margin-top:-1px;padding:0;display:block;}
+*:focus {outline:none;}
+.obfuscate {margin:0;height:0;width:0;overflow:hidden;text-indent:-10000px;display:block;}

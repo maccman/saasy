@@ -1,0 +1,8 @@
+<% title 'Edit Profile' %>
+
+<%= error_messages_for :user %>
+
+<% form_for :user, :url => @user, :html => {:method => :put} do |f| -%>
+  <%= render :partial => "/users/user", :locals => {:user => @user} %>
+  <p class="input-button"><%= submit_tag 'Update' %></p>
+<% end -%>

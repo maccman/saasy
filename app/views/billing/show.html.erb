@@ -1,0 +1,58 @@
+<% title 'Billing' %>
+
+<h3>Current plan</h3>
+<p>
+  Your current plan is the <%= @subscription.plan_name.humanize %> one at <%= humanize_plan @subscription.plan %>.<br />
+  Your account will next be charged on the <%= @subscription.expires_at.to_s(:date) %>.
+</p>
+
+<h3>Change Plan</h3>
+<%= form_tag :action => :change_plan %>
+  <p class="inline">
+    <%= select :subscription, :plan_name, plans %>
+    <%= submit_tag 'Change plan' %>
+  </p>
+</form>
+
+<h3>Update information</h3>
+<ul>
+  <li>Update payment information <%= link_to "here", :controller => "subscriptions", :action => "edit" %>.</li>
+  <li>Update account invoice information <%= link_to "here", :controller => "subscription_addresses", :action => "edit" %>
+</ul>
+
+<h3>Invoices</h3>
+<ul>
+<% @transactions.each do |trans| %>
+  <li><%= link_to "#{trans.created_at.to_s(:date)} - #{trans.money.format}", :action => "invoice", :id => trans.id, :format => "pdf" %></li>
+<% end %>
+</ul>
+<%- if @transactions.empty? -%>
+  <p>None so far</p>
+<%- end -%>
+
+<% users = User.other_account_users(@user).in_state(:active).all %>
+<% if users.any? %>
+  <h3>Change account owner</h3>
+  <%= form_tag :action => :change_owner %>
+    <p>
+      Warning - you won't be able to view this page if you change the account owner.
+    </p>
+    <p class="inline">
+      <%= select_tag('owner_id', 
+          options_for_select(
+            users.collect {|u| [u.name, u.id] }
+          )
+        ) %>
+      <%= submit_tag 'Change account owner' %>
+    </p>
+  </form>
+<% end %>
+
+
+<h3>Cancel account</h3>
+<p>
+  <%= button_to 'Cancel my account', {:action => "cancel"}, :method => "get", :style => 'float:right' %>
+  We're sorry to see you leave. Once your account is cancelled you won't be charged again after your official cancellation date. <br />
+  You can always activate this account again by contacting us.
+</p>
+

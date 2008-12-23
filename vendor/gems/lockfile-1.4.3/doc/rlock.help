@@ -1,0 +1,95 @@
+  NAME
+    rlock v1.3.0
+
+  SYNOPSIS
+    rlock [options]+ file.lock [program [-- [options]+] [args]+]
+
+  DESCRIPTTION
+    rlock creates NFS resistent lockfiles
+
+  ENVIRONMENT
+    LOCKFILE_DEBUG=1 will show internal actions of the library
+
+  DIAGNOSTICS
+   success => $? == 0
+   failure => $? != 0
+
+  AUTHOR
+   ara.t.howard@noaa.gov
+
+  BUGS
+   > 1
+
+  OPTIONS
+
+
+    -r, --retries=n                  default(nil) - (nil => forever)
+    -a, --max_age=n                  default(1024)
+    -s, --sleep_inc=n                default(2)
+    -p, --max_sleep=n                default(32)
+    -P, --min_sleep=n                default(2)
+    -u, --suspend=n                  default(64)
+    -t, --timeout=n                  default(nil) - (nil => never)
+    -f, --refresh=n                  default(8)
+    -d, --debug                      default(false)
+    -R, --poll_retries=n             default(16)
+    -S, --poll_max_sleep=n           default(0.08)
+    -w, --dont_sweep                 default(false)
+    -v=0-4|debug|info|warn|error|fatal
+        --verbosity
+    -l, --log=path
+        --log_age=log_age
+        --log_size=log_size
+    -h, --help
+
+  EXAMPLES
+
+    0) simple usage - just create a file.lock in an atomic fashion 
+
+      ~ > rlock file.lock
+
+    1) safe usage - create a file.lock, execute a command, and remove file.lock
+
+      ~ > rlock file.lock ls file.lock
+
+    2) same as above, but logging verbose messages 
+
+      ~ > rlock -v4 file.lock ls file.lock
+   
+    3) same as above, but logging verbose messages and showing actions internal to
+       lockfile library
+
+      ~ > rlock -v4 -d file.lock ls file.lock
+
+    4) same as above
+
+      ~ > LOCKFILE_DEBUG=1 rlock -v4 file.lock ls file.lock
+
+    5) same as above
+
+      ~ > export LOCKFILE_DEBUG=1
+      ~ > rlock -v4 file.lock ls file.lock
+
+    6) note that you need to tell the option parser to stop parsing rlock
+       options if you intend to pass options to 'program' 
+
+      ~ > rlock -v4 -d file.lock -- ls -ltar file.lock
+
+       without the '--' rlock would consume the '-ltar' options, parsing it
+       as the logfile name 'tar'
+
+    7) lock file.lock and exec 'program' - remove the file.lock if it is older
+       than 4242 seconds
+
+      ~ > rlock --max_age=4242 file.lock program 
+
+    8) lock file.lock and exec 'program' - remove the file.lock if it is older
+       than 4242 seconds, also spawn a background thread which will refresh
+       file.lock every 8 seonds will 'program' is executing
+
+      ~ > rlock --max_age=4242 --refresh=8 file.lock program 
+
+    9) same as above, but fail if file.lock cannot be obtained within 1 minute
+
+      ~ > rlock --max_age=4242 --refresh=8 --timeout=60 file.lock program 
+

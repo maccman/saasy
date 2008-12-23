@@ -1,0 +1,7 @@
+<% title 'Cancel account' %>
+
+<p>
+  Are you sure you want to cancel your account?
+  <%= button_to 'Back', {:action => "index"}, :method => "get" %> 
+    <%= button_to 'Cancel my account', {:action => "cancel"} %>
+</p>

@@ -1,0 +1,11 @@
+<%= render :partial => "/shared/email_header", :locals => {:user => @user} %>
+
+Just to let you know, your trial with <%= AppConfig.app_name %> is expiring soon.
+
+If you want to continue the service, you don't need to do anything, 
+you'll be automatically billed in two days time.
+
+If, however, you want to discontinue the service, please cancel it before that time. 
+Otherwise you'll be charged for the month.
+
+<%= render :partial => "/shared/email_footer" %>

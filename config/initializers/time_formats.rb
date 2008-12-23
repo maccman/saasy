@@ -1,0 +1,1 @@
+ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS[:date] = "%d/%m/%Y"

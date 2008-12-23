@@ -1,0 +1,31 @@
+<% title 'Sign up' %>
+
+<% @user.password = @user.password_confirmation = nil %>
+
+<% 
+  # We need to set @card
+  # for 'error_messages_for'
+  @card = @subscription.card
+  @card.number = nil
+%>
+
+<% form_for :user, :url => users_path, :html => {:class => 'enhanced'} do |f| -%>
+  <%= error_messages_for :user %>
+  <%= render :partial => "/users/user", :locals => {:user => @user} %>
+  
+  <h2>Card details</h2>
+  <%= error_messages_for :card %>
+  
+  <%= render :partial => "/subscriptions/subscription", :locals => {:subscription => @subscription} %>
+  
+  <h2>Invoice details</h2>
+  <%= error_messages_for :subscription_address %>
+  
+  <%= render :partial => "/subscription_addresses/subscription_address", :locals => {:subscription_address => @subscription_address} %>
+  
+  <p class="input-field checkbox">
+    <%= f.label :eula, 'I agree to the Terms of Service, Privacy, & Refund policies' %>
+    <%= f.check_box :eula %>
+  </p>
+  <p class="input-button"><%= submit_tag 'Sign up' %></p>
+<% end -%>

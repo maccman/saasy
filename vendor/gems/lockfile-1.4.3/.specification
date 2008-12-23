@@ -1,0 +1,71 @@
+--- !ruby/object:Gem::Specification 
+name: lockfile
+version: !ruby/object:Gem::Version 
+  version: 1.4.3
+platform: ruby
+authors: 
+- Ara T. Howard
+autorequire: lockfile
+bindir: bin
+cert_chain: 
+date: 2007-03-21 00:00:00 +00:00
+default_executable: 
+dependencies: []
+
+description: 
+email: ara.t.howard@noaa.gov
+executables: 
+- rlock
+- rlock-1.4.3
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- install.rb
+- README
+- rlock
+- lib
+- bin
+- samples
+- doc
+- gemspec.rb
+- lib/lockfile.rb
+- lib/lockfile-1.4.3.rb
+- bin/rlock
+- bin/rlock-1.4.3
+- samples/a.rb
+- samples/nfsstore.rb
+- samples/out
+- samples/lock.sh
+- samples/lock
+- samples/lockfile
+- doc/rlock.help
+has_rdoc: true
+homepage: http://codeforpeople.com/lib/ruby/lockfile/
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">"
+    - !ruby/object:Gem::Version 
+      version: 0.0.0
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.1
+signing_key: 
+specification_version: 1
+summary: lockfile
+test_files: []
+

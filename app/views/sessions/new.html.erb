@@ -1,0 +1,35 @@
+<% title 'Log In' %>
+
+<% form_tag session_path do -%>
+  <p class="input-field openid">
+    <%= label_tag 'openid_url', 'OpenID' %>
+    <%= text_field_tag "openid_url", h(params[:openid_url]) %>
+  </p>
+  
+  <p class="input-indent openid"><%= use_password_link %></p>
+
+  <p class="input-field password">
+    <%= label_tag 'email' %>
+    <%= text_field_tag 'email', h(params[:email]) %>
+  </p>
+
+  <p class="input-field password">
+    <%= label_tag 'password' %>
+    <%= password_field_tag 'password', nil %>
+  </p>
+  
+  <p class="input-indent password"><%= use_openid_link %></p>
+  
+  <p class="input-field checkbox">
+    <%= label_tag 'remember_me' %>
+    <%= check_box_tag 'remember_me', '1', h(params[:remember_me]) %>
+  </p>
+
+  <p class="input-button">
+    <%= submit_tag 'Log in' %>
+  </p>
+<% end -%>
+
+<% content_for(:head) do %>
+  <%= javascript_include_tag "credential_toggle" %>
+<% end %>

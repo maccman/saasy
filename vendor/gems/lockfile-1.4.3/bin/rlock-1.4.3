@@ -1,0 +1,360 @@
+#!/usr/bin/env ruby
+#
+# built-in
+#
+  require 'optparse'
+  require 'logger'
+#
+# http://raa.ruby-lang.org/project/lockfile/
+#
+  require 'lockfile-1.4.3'
+
+  class Main
+#--{{{
+    VERSION = Lockfile::VERSION 
+
+    USAGE = 
+#--{{{
+  <<-usage
+  NAME
+    rlock v#{ VERSION }
+
+  SYNOPSIS
+    rlock [options]+ lockfile [program [args]+ | -- program options+ [args]+]
+
+  DESCRIPTTION
+    rlock creates NFS safe lockfiles.  it can optionally run a program while
+    holding the lock, ensuring lockfile removal on program exit.  if a program
+    is specified to be run rlock will spawn a background thread to kept the
+    lockfile 'fresh' by touching it at a regular interval.  in this way a lease
+    is maintained on the lockfile and other processes attempting to obtain the
+    lock can determine that it is in use.  see the '--refresh' option for how to
+    control the touch interval.  any other process trying to obtain a lock will
+    automatically remove a stale lockfile; a stale lockfile is one that is older
+    than a certain age.  this age be controled via the '--max_age' option.
+
+  ENVIRONMENT
+    LOCKFILE_DEBUG=1 
+      causes internal actions of the library to be shown on STDERR 
+
+  DIAGNOSTICS
+   rlock attempts to exit with the status of 'program' except where it
+   cannot due to exceptional conditions.  in addition the message 
+
+    'RLOCK SUBCOMMAND FAILURE' 
+    
+    will be printed on STDERR if 'program' exits with non-zero status.
+
+   success => $? == 0
+   failure => $? != 0
+
+  AUTHOR
+   ara.t.howard@noaa.gov
+
+  BUGS
+    1 < bugno && bugno < 42
+
+  OPTIONS
+  usage
+#--}}}
+
+    EXAMPLES =
+#--{{{
+  <<-examples
+  EXAMPLES
+
+    0) simple usage - create lockfile in an atomic fashion (obtain a lock) 
+
+      ~ > rlock lockfile
+
+    1) safe usage - create a lockfile, execute a command, and remove lockfile
+
+      ~ > rlock lockfile ls lockfile
+
+    2) same as above, but logging verbose messages 
+
+      ~ > rlock -v4 lockfile ls lockfile
+   
+    3) same as above, but logging verbose messages and showing actions internal
+    to lockfile library
+
+      ~ > rlock -v4 -d lockfile ls lockfile
+
+    4) same as above
+
+      ~ > LOCKFILE_DEBUG=1 rlock -v4 lockfile ls lockfile
+
+    5) same as above
+
+      ~ > export LOCKFILE_DEBUG=1
+      ~ > rlock -v4 lockfile ls lockfile
+
+    6) you need to tell the option parser to stop parsing rlock options if you
+    intend to pass options to 'program' 
+
+      ~ > rlock -v4 -d lockfile -- ls -ltar lockfile
+
+       without the '--' rlock would consume the '-ltar' option as one of
+       it's own.
+
+    7) lock lockfile and exec 'program' - remove the lockfile if it is older
+    than 4242 seconds
+
+      ~ > rlock --max_age=4242 lockfile program 
+
+    8) lock lockfile and exec 'program' - remove the lockfile if it is older
+    than 4242 seconds, set the refresh rate to be 8 seconds.
+
+      ~ > rlock --max_age=4242 --refresh=8 lockfile program 
+
+    9) same as above, but fail if lockfile cannot be obtained within 1 minute
+
+      ~ > rlock --max_age=4242 --refresh=8 --timeout=60 lockfile program 
+
+    10) lockfile creation involves making some temporary files.  normally these
+    are cleaned up unless rlock is killed with 'kill -9'.  these temp files are
+    normally 'sweeped' - searched for and removed - unless the '--dont_sweep'
+    option is given.  note that sweeping can remove ONLY old temp files created
+    by the same host since there is otherwise no way to tell if the offending
+    process is still running.
+
+    lock lockfile and run program - do not do any sweeping
+
+      ~ > rlock --dont_sweep lockfile program 
+
+  examples
+#--}}}
+
+    EXIT_SUCCESS = 0
+    EXIT_FAILURE = 1
+
+    attr :argv
+    attr :op
+    attr :logger
+    attr :config
+
+    def initialize argv = ARGV
+#--{{{
+      @argv = mcp argv
+      parse_opts
+      if @opt_version
+        puts Main::VERSION
+        exit EXIT_SUCCESS
+      end
+      if @opt_help
+        usage
+        exit EXIT_SUCCESS
+      end
+      parse_argv
+      run
+#--}}}
+    end
+    def run
+#--{{{
+      init_logging
+
+      debug{ "lockpath <#{ @lockpath }>" }
+
+      opts = {}
+      options = 
+        %w(retries max_age sleep_inc min_sleep max_sleep suspend timeout refresh poll_retries poll_max_sleep)
+      options.each do |opt|
+        #if((val = eval("opt_#{ opt }")))
+        if(send("opt_#{ opt }?"))
+          val = send "opt_#{ opt }"
+          begin
+            val = (opts[opt] = String === val ? Integer(val) : val)
+            logger.debug{ "<#{ opt }> <#{ val.inspect }>" }
+          rescue
+            logger.fatal{ "illegal value <#{ val.inspect }> for opt <#{ opt }>" }
+            exit EXIT_FAILURE
+          end
+        end
+      end
+
+      opts['debug'] = true if opt_debug
+
+      begin
+        case @argv.size
+          when 0
+            opts['dont_clean'] = true
+            logger.debug{ "opts <#{ opts.inspect }>" }
+            logger.debug{ "aquiring lock <#{ @lockpath }>..." }
+          #
+          # simple usage - just create the lockfile with opts
+          #
+            lockfile = ::Lockfile.new @lockpath, opts
+            lockfile.lock
+
+            logger.debug{ "aquired lock <#{ @lockpath }>" }
+          else
+            logger.debug{ "opts <#{ opts.inspect }>" }
+            logger.debug{ "aquiring lock <#{ @lockpath }>..." }
+          #
+          # block usage - create the lockfile with opts, run block, rm lockfile
+          #
+            status = 1
+
+            lockfile = ::Lockfile.new @lockpath, opts
+
+            lockfile.lock do
+              logger.debug{ "aquired lock <#{ @lockpath }>" }
+              logger.debug{ "cmd <#{ @argv.join ' ' }>" }
+              v = nil
+              begin
+                v = $VERBOSE
+                $VERBOSE = nil 
+                STDOUT.flush
+                STDERR.flush
+                fork{ exec(*@argv) }
+                pid, status = Process::wait2
+              ensure
+                $VERBOSE = v
+              end
+              logger.debug{ "status <#{ $? }>" }
+            end
+
+            status = status.exitstatus
+            STDERR.puts "RLOCK SUBCOMMAND FAILURE" unless status == 0
+            exit status
+        end
+      rescue => e
+        logger.fatal{ e }
+        exit EXIT_FAILURE
+      end
+
+      exit EXIT_SUCCESS
+#--}}}
+    end
+    def parse_opts
+#--{{{
+      @op = OptionParser::new
+      @op.banner = ''
+      define_options
+      @op.parse! argv
+
+#--}}}
+    end
+    def parse_argv
+#--{{{
+      usage and exit EXIT_FAILURE if @argv.empty?
+      @lockpath = @argv.shift
+#--}}}
+    end
+    def define_options
+#--{{{
+      options = [
+        ['--retries=n','-r', "default(#{ Lockfile.retries.inspect }) - (nil => forever)"],
+        ['--max_age=n','-a', "default(#{ Lockfile.max_age.inspect })"],
+        ['--sleep_inc=n','-s', "default(#{ Lockfile.sleep_inc.inspect })"],
+        ['--max_sleep=n','-p', "default(#{ Lockfile.max_sleep.inspect })"],
+        ['--min_sleep=n','-P', "default(#{ Lockfile.min_sleep.inspect })"],
+        ['--suspend=n','-u', "default(#{ Lockfile.suspend.inspect })"],
+        ['--timeout=n','-t', "default(#{ Lockfile.timeout.inspect }) - (nil => never)"],
+        ['--refresh=n','-f', "default(#{ Lockfile.refresh.inspect })"],
+        ['--debug','-d', "default(#{ Lockfile.debug.inspect })"],
+        ['--poll_retries=n','-R', "default(#{ Lockfile.poll_retries.inspect })"],
+        ['--poll_max_sleep=n','-S', "default(#{ Lockfile.poll_max_sleep.inspect })"],
+        ['--dont_sweep','-w', "default(#{ Lockfile.dont_sweep.inspect })"],
+
+        ['--version'],
+        ['--verbosity=0-4|debug|info|warn|error|fatal','-v'],
+        ['--log=path','-l'],
+        ['--log_age=log_age'],
+        ['--log_size=log_size'],
+        ['--help','-h'],
+      ]
+      options.each do |option|
+        opt = option.first.gsub(%r/(?:--)|(?:=.*$)/o,'').strip
+        get, set = opt_attr opt
+        value4 = lambda do |v|
+          case v
+            when NilClass, %r/^t|true$/i
+              true
+            when %r/^f|false$/i
+              false
+            when %r/^nil|nul|null$/i
+              nil
+            else
+              v
+          end
+        end
+        @op.def_option(*option) do |v|
+          send set, value4[v]
+        end
+      end
+#--}}}
+    end
+    %w(debug info warn error fatal).each do |m|
+      eval "def #{ m }(*args,&block);@logger.#{ m }(*args,&block);end"
+    end
+    def init_logging
+#--{{{
+      if @opt_log_age
+        @opt_log_age = @opt_log_age.to_i if @opt_log_age =~ /\d/
+      end
+      if @opt_log_size
+        @opt_log_size = @opt_log_size.to_i if @opt_log_size =~ /\d/
+      end
+      $logger = @logger = Logger::new(@opt_log || STDERR, @opt_log_age, @opt_log_size)
+
+      level = nil
+      @opt_verbosity ||= 'info'
+      @opt_verbosity =
+        case @opt_verbosity
+          when /^\s*(?:4|d|debug)\s*$/io
+            level = 'Logging::DEBUG'
+            4
+          when /^\s*(?:3|i|info)\s*$/io
+            level = 'Logging::INFO'
+            3
+          when /^\s*(?:2|w|warn)\s*$/io
+            level = 'Logging::WARN'
+            2
+          when /^\s*(?:1|e|error)\s*$/io
+            level = 'Logging::ERROR'
+            1
+          when /^\s*(?:0|f|fatal)\s*$/io
+            level = 'Logging::FATAL'
+            0
+          else
+            abort "illegal verbosity setting <#{ @opt_verbosity }>" 
+        end
+      @logger.level = 2 - ((@opt_verbosity % 5) - 2) 
+#--}}}
+    end
+    def usage io = STDOUT
+#--{{{
+      io << USAGE
+      io << "\n"
+      io << @op
+      io << "\n"
+      io << EXAMPLES if defined? EXAMPLES
+      self
+#--}}}
+    end
+    def opt_attr opt
+#--{{{
+      query = "opt_#{ opt }?"
+      get = "opt_#{ opt }"
+      set = "#{ get }="
+      code = <<-code
+        class << self
+          def #{ query }; defined? @#{ get }; end
+          def #{ get }; defined?(@#{ get }) ? @#{ get } : nil; end
+          def #{ set } value; @#{ get } = value; end
+        end
+      code
+      instance_eval code 
+      [get, set]
+#--}}}
+    end
+    def mcp obj
+#--{{{
+      Marshal::load(Marshal::dump(obj))
+#--}}}
+    end
+#--}}}
+  end
+
+  Main::new
