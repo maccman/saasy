@@ -1,0 +1,6 @@
+db/*.sqlite3
+config/database.yml
+config/subscription.yml
+config/application.yml
+log/*.log
+tmp
