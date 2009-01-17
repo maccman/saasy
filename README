@@ -50,7 +50,7 @@ info@eribium.org
 # cp config/application.example.yml config/application.yml
 # cp config/subscription.example.yml config/subscription.yml
 # rake db:schema:load
-# Setup a cron job to run `rake sub:daily` daily
+# Setup a cron job to run `rake subs:daily` daily
 # configure application.yml
 # configure subscriptions.yml
 # script/server -p 3001
