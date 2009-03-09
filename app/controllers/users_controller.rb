@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_filter :login_required, :except => [:new, :create, :activate]
   before_filter :account_owner_required, :only => [:index, :add_user, :unsuspend, :destroy]
   before_filter :find_user, :only => [:current, :show, :edit, :update, :unsuspend, :destroy]
+  ssl_required :new, :create
   
   def index
     @users = current_account.users.all
@@ -58,10 +59,9 @@ class UsersController < ApplicationController
     @subscription.plan_name ||= 'basic'
     @subscription.card = params[:card]
     @account = Account.new
-    @subscription_address = SubscriptionAddress.new(params[:subscription_address])
     # We have to check if the records are valid before saving 
     # since (even in a transaction) the callbacks are called
-    [@user, @subscription, @subscription_address].each {|ins|
+    [@user, @subscription].each {|ins|
       raise ActiveRecord::RecordInvalid.new(ins) unless ins.valid?
     }
     User.transaction do
@@ -71,10 +71,9 @@ class UsersController < ApplicationController
       @user.update_attribute(:account, @account)
       @subscription.account = @account
       @subscription.save!
-      @subscription_address.subscription = @subscription
-      @subscription_address.save!
     end
     @account.activate!
+    UserMailer.deliver_signup_notification(@user)
     flash[:notice] = "Thanks for signing up!  We're sending you an email " \
                      "with your activation code"
     redirect_to '/login'

@@ -1,24 +1,30 @@
 <% title 'Billing' %>
 
+<%- if @subscription.error? -%>
+  <div class="flash error">
+    There has been a problem charging your account - if your card information need <%= link_to 'updating', :controller => "subscriptions", :action => "edit" %>, please do so. We'll try again in a few days.
+  </div>
+<%- end -%>
+
 <h3>Current plan</h3>
 <p>
   Your current plan is the <%= @subscription.plan_name.humanize %> one at <%= humanize_plan @subscription.plan %>.<br />
-  Your account will next be charged on the <%= @subscription.expires_at.to_s(:date) %>.
+  Your account will next be charged on <%= @subscription.next_renewal_at.to_s(:date) %>.
 </p>
 
 <h3>Change Plan</h3>
 <%= form_tag :action => :change_plan %>
   <p class="inline">
     <%= select :subscription, :plan_name, plans %>
-    <%= submit_tag 'Change plan' %>
+    <%= submit_tag 'Change plan', :class => 'input-button' %>
   </p>
 </form>
 
 <h3>Update information</h3>
-<ul>
+<ol>
   <li>Update payment information <%= link_to "here", :controller => "subscriptions", :action => "edit" %>.</li>
-  <li>Update account invoice information <%= link_to "here", :controller => "subscription_addresses", :action => "edit" %>
-</ul>
+  <li>Update account invoice information <%= link_to "here", :controller => "subscription_addresses", :action => "edit" %>.</li>
+</ol>
 
 <h3>Invoices</h3>
 <ul>
@@ -43,7 +49,7 @@
             users.collect {|u| [u.name, u.id] }
           )
         ) %>
-      <%= submit_tag 'Change account owner' %>
+      <%= submit_tag 'Change account owner', :class => 'input-button' %>
     </p>
   </form>
 <% end %>
@@ -51,8 +57,7 @@
 
 <h3>Cancel account</h3>
 <p>
-  <%= button_to 'Cancel my account', {:action => "cancel"}, :method => "get", :style => 'float:right' %>
+  <%= button_to 'Cancel my account', {:action => "cancel"}, :method => "get", :style => 'float:right', :class => 'input-button' %>
   We're sorry to see you leave. Once your account is cancelled you won't be charged again after your official cancellation date. <br />
   You can always activate this account again by contacting us.
 </p>
-

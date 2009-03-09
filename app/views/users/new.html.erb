@@ -10,18 +10,46 @@
 %>
 
 <% form_for :user, :url => users_path, :html => {:class => 'enhanced'} do |f| -%>
+  <%= hidden_field :subscription, :plan_name %>
+  
   <%= error_messages_for :user %>
   <%= render :partial => "/users/user", :locals => {:user => @user} %>
   
-  <h2>Card details</h2>
+  <h2 class="bar">Card details</h2>
+  <p class="input-indent highlight">
+    You won't be billed unless you keep your account open past your 30-day free trial.
+  </p>
+  <p class="input-indent">
+    We need your billing information to verify there's room to charge your first month should you keep your account open. 
+    This prevents any interruption in service.
+    <br />
+    <b>Your credit card is secure.</b>
+  </p>
+  
   <%= error_messages_for :card %>
   
   <%= render :partial => "/subscriptions/subscription", :locals => {:subscription => @subscription} %>
   
-  <h2>Invoice details</h2>
-  <%= error_messages_for :subscription_address %>
+  <h2 class="bar">Summary</h2>
+  <div class="input-indent">
+    <p class="highlight">
+      You have chosen the 
+      <%= @subscription.plan[:humanized] || @subscription.plan[:name].humanize %> plan
+      (<%= @subscription.plan_money.format %>/month)
+    </p>
   
-  <%= render :partial => "/subscription_addresses/subscription_address", :locals => {:subscription_address => @subscription_address} %>
+    <p>
+      Your free trial will end at midnight on <b><%= @subscription.expires_at.to_s(:full) %></b>. 
+      If you decide to keep your account open past your <b>30-day free trial</b> period, 
+      you'll be charged <%= @subscription.plan_money.format %>/month for the service.
+      If you don't want to continue using <%= AppConfig.app_name %>, just cancel before you're billed on <%= @subscription.expires_at.to_s(:full) %> and you won't be charged.
+    </p>
+    
+    <p>
+      Payment is monthly. There are no sign-up or cancellation fees.<br />
+      You can cancel your account at any time.
+    </p>
+  </div>
   
   <p class="input-field checkbox">
     <%= f.label :eula, 'I agree to the Terms of Service, Privacy, & Refund policies' %>

@@ -9,7 +9,7 @@
 <%= error_messages_for :card %>
 <%= error_messages_for :subscription %>
 
-<%= form_tag({:action => :update}, :method => :put, :class => 'enhanced') %>
+<%= form_tag({:action => :update}, :method => :put, :class => 'slow') %>
   <%= render :partial => "subscription", :locals => {:subscription => @subscription} %>
   
   <p class="input-button"><%= submit_tag 'Update' %></p>

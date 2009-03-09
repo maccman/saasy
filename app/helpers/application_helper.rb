@@ -16,14 +16,7 @@ module ApplicationHelper
   end
   
   def humanize_plan(plan)
-    interval = case plan[:interval]
-    when 1.month: "month"
-    when 1.year:  "year"
-    else
-      "#{plan[:interval] / 1.day} days"
-    end
     price = Money.new(plan[:price], plan[:currency])
-    
-    price.format + '/' + interval
+    price.format + '/month'
   end
 end
