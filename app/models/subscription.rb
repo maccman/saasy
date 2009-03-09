@@ -25,7 +25,7 @@ class Subscription < ActiveRecord::Base
   validate_on_create      :valid_plan
   validates_presence_of   :next_renewal_at
   
-  attr_accessible :card
+  attr_accessible :card, :plan_name
     
   named_scope :for_account, lambda {|account| 
     { :conditions => { :account_id => account.id } } 
@@ -54,25 +54,26 @@ class Subscription < ActiveRecord::Base
   end
   
   event :active do
-    transitions :from => [:pending, :trial, :error], :to => :active 
+    transitions :from => [:active, :pending, :trial, :error], :to => :active 
   end
 
   event :error do
-    transitions :from => [:pending, :active, :trial], :to => :error
+    transitions :from => [:error, :pending, :active, :trial], :to => :error
   end
   
-  def renew!(time = Time.now)
+  def renew!
     begin
       charge!(plan_money)
     rescue SubscriptionError => e
       logger.error "****Subscription Error****"
       logger.error e.response.message
-      self.last_charge_error = e.class.name + ': ' + e.response.message
+      self.last_charge_error = e.class.name + ' - ' + e.response.message
       self.error! # Saves last_charge_error too
       false
     else
-      record_transaction!(time, plan_money)
-      self.next_renewal_at = expires_at(time)
+      record_transaction!(next_renewal_at, plan_money)
+      self.last_charge_error = nil
+      self.next_renewal_at = expires_at(next_renewal_at)
       self.active! # Saves next_renewal_at too
       true
     end
@@ -119,8 +120,9 @@ class Subscription < ActiveRecord::Base
     !!@card
   end
   
-  def expires_at(time = Time.now)
-    plan_name? && (time + plan[:interval]).midnight
+  def expires_at(time = next_renewal_at)
+    time ||= Time.now.midnight
+    (time + 1.month).midnight
   end
   
   def to_xml(options = {})
@@ -182,7 +184,7 @@ class Subscription < ActiveRecord::Base
       tran = transactions.build
       tran.money = money
       tran.meta = {}
-      tran.meta[:from] = (time - plan[:interval]).midnight
+      tran.meta[:from] = (time - 1.month).midnight
       tran.meta[:to]   = time
       tran.save
     end
@@ -196,7 +198,7 @@ class Subscription < ActiveRecord::Base
     end
   
     def set_default_renewal
-      self.next_renewal_at = expires_at
+      self.next_renewal_at = expires_at(Time.now.midnight)
     end
   
     def valid_plan

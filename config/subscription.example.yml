@@ -6,19 +6,15 @@
   
   plans:
     - name: basic
-      interval: <%= 1.month %>
       currency: USD
       price: 2400
     - name: plus
-      interval: <%= 1.month %>
       currency: USD
       price: 4900
     - name: premium
-      interval: <%= 1.month %>
       currency: USD
       price: 9900
     - name: max
-      interval: <%= 1.month %>
       currency: USD
       price: 14900
     
