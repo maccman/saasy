@@ -9,7 +9,7 @@
   @card.number = nil
 %>
 
-<% form_for :user, :url => users_path, :html => {:class => 'enhanced'} do |f| -%>
+<% form_for :user, :url => users_path, :html => {:class => 'slow'} do |f| -%>
   <%= hidden_field :subscription, :plan_name %>
   
   <%= error_messages_for :user %>
