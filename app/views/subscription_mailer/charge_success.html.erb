@@ -1,7 +1,6 @@
 <%= render :partial => "/shared/email_header", :locals => {:user => @user} %>
 
 This email is to let you know we successfully charged your account the amount of <%= @subscription.plan_money.format %>.
-
-<%# todo - attach pdf invoice %>
+You can download the invoice from your account page (<%= AppConfig.app_site + '/billing' %>).
 
 <%= render :partial => "/shared/email_footer" %>

@@ -7,12 +7,11 @@ class SubscriptionMailer < ActionMailer::Base
     @body[:message] = message
   end
   
-  def second_charge_failure(sub, message = nil)
+  def second_charge_failure(sub)
     user = sub.account.owner
     setup_email(user.email)
     @body[:subscription] = sub
     @body[:user] = user
-    @body[:message] = message
   end
   
   def charge_success(sub)

@@ -1,9 +1,6 @@
 <%= render :partial => "/shared/email_header", :locals => {:user => @user} %>
 
-We tried to charge your account the amount of <%= @subscription.plan_money.format %>, 
-however the charge failed with the following message:
-  <%= @message %>
-  
-If you card information need updating, please do so. We'll try again in a few days.
+We tried to charge your account the amount of <%= @subscription.plan_money.format %>, however the charge failed.
+If your card information need updating, please do so. We'll try again in a few days.
 
 <%= render :partial => "/shared/email_footer" %>
