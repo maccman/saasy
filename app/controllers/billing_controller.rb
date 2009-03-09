@@ -35,7 +35,7 @@ class BillingController < ApplicationController
   def cancel
     if request.post?
       current_account.suspend!
-      reset_session
+      logout_killing_session!
       flash[:notice] = "Successfully removed account"
       redirect_to login_url
     end
