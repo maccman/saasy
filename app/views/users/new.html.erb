@@ -1,4 +1,7 @@
 <% title 'Sign up' %>
+<% content_for(:head) do %>
+  <%= stylesheet_link_tag 'signup' %>
+<% end %>
 
 <% @user.password = @user.password_confirmation = nil %>
 
@@ -9,7 +12,7 @@
   @card.number = nil
 %>
 
-<% form_for :user, :url => users_path, :html => {:class => 'slow'} do |f| -%>
+<% form_for :user, :url => users_path, :html => {:class => 'horizontal slow'} do |f| -%>
   <%= hidden_field :subscription, :plan_name %>
   
   <%= error_messages_for :user %>
