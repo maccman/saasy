@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   
     def authenticate_by_identity_url(identity_url)
       return nil if identity_url.blank?
-      u = in_state(:active).first
+      u = in_state(:active).first(:conditions => {:identity_url => identity_url})
       u && u.account.active? ? u : nil
     end
   end
