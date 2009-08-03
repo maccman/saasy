@@ -18,6 +18,8 @@ class SubscriptionAddressesController < ApplicationController
   private
   
     def find_subscription_address
-      @subscription_address = current_account.subscription.subscription_address
+      @subscription = current_account.subscription
+      @subscription_address = @subscription.subscription_address || 
+                              @subscription.build_subscription_address
     end
 end
