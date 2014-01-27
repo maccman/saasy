@@ -1,4 +1,4 @@
-== Welcome to Saasy
+= Welcome to Saasy
 
 Saasy is a Rails app that bills and authenticates, so you don't have to.
 The idea is that you host Saasy on a subdomain, and communicate with it using SSO/REST protocols. 
@@ -14,6 +14,7 @@ http://eribium.org
 info@eribium.org
 
 == Screenshots
+
 * Billing         - http://github.com/maccman/saasy/tree/master/doc/Saasy_Billing.png
 * Sign up         - http://github.com/maccman/saasy/tree/master/doc/Saasy_Signup.png
 * Edit profile    - http://github.com/maccman/saasy/tree/master/doc/Sassy_Edit_Profile.png
